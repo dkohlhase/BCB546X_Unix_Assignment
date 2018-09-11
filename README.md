@@ -7,6 +7,7 @@
 
 <br>
 ## **Data Inspection**
+
 ### File Size
 
 	$ ls -lh fang_et_al_genotypes.txt snp_position.txt
