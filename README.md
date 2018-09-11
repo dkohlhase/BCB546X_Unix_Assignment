@@ -2,9 +2,9 @@
 ### Due: September 21 by 17:00 
 ### Daniel Kohlhase
 
-[Data Inspection](## Data Inspection)
+[Data Inspection](#data-inspection)
 
-[Data Processing](## Data Processing)
+[Data Processing](#data-processing)
 
 <br>
 
@@ -21,6 +21,7 @@
 The genotype file is 11 Mb and the snp file is 81 kb
 
 <br>
+
 ### Lines, Words, Characters
 
 	$ wc fang_et_al_genotypes.txt snp_position.txt
@@ -34,7 +35,9 @@ The genotype file is 11 Mb and the snp file is 81 kb
 The genotype file has 2783 lines and the snp file has 984 lines.
 
 <br>
+
 ### Columns
+
 	$ awk -F "\t" '{print NF; exit}' fang_et_al_genotypes.txt
 >	986
 
@@ -48,7 +51,9 @@ The snp file has 15 columns.
 <br>
 <br>
 <br>
-## Data **Processing**
+
+## Data Processing
+
 ### Extract maize data from genotype file 
 
 First we need the column headers.
@@ -64,7 +69,6 @@ We can extract maize data in one fell swoop.
 | --- 		| --- 		| --- 			| ---
 |1574		|1551964	|6250961		|`maize.txt`
 
-<br>
 Double check the unique entries in column 3 of maize.txt while counting the number of each entry
 
 	$ cut -f 3 maize.txt | sort | uniq -c
@@ -76,7 +80,9 @@ Double check the unique entries in column 3 of maize.txt while counting the numb
 |27		|ZMMMR
 
 <br>
+
 ### Extract teosinte data from genotype file
+
 	$ head -n 1 fang_et_al_genotypes.txt > teosinte.txt
 	$ grep  -e "ZMPBA" -e "ZMPIL" -e "ZMPJA" fang_et_al_genotypes.txt >> teosinte.txt
 	$ wc teosinte.txt 
@@ -85,7 +91,6 @@ Double check the unique entries in column 3 of maize.txt while counting the numb
 | --- 		| --- 		| --- 			| ---
 |976		|962336	|3884185		|`teosinte.txt`
 
-<br>
 Double check the unique entries in column 3 of teosinte.txt while counting the number of each entry.
 
 	$ cut -f 3 teosinte.txt | sort | uniq -c
@@ -98,6 +103,7 @@ Double check the unique entries in column 3 of teosinte.txt while counting the n
 <br>
 
 ### Transpose the maize and teosinte files
+
 	$ awk -f transpose.awk maize.txt > maize_transposed.txt
 	$ wc maize_transposed.txt
 	
@@ -113,6 +119,8 @@ Double check the unique entries in column 3 of teosinte.txt while counting the n
 |968		|962336	|3884185		|`teosinte_transposed.txt`
 
 The number of lines has changed in both files and now match. The number of words and characters remained the same for the respective files, which is what we would expect because all we did was rearrange (transpose) the file.
+
+<br>
 
 ### Create header and information files from the genotype file
 
@@ -131,6 +139,8 @@ The second file is a header file which is **just the top two lines** of the tran
 Manually add labels for the SNP_ID, Chromosome, Position in the first three columns of the header file.
 	
 	$ vi maize_header.txt
+	
+<br>
 
 ### Extract and rearange SNP information
 
@@ -147,22 +157,16 @@ Before joining the SNP information with the genotype information, both files nee
 
 	$ sort -k1,1 short_snp_all.txt > short_snp_all_sort.txt 
 	$ sort -k1,1 maize_tran_short.txt > maize_tran_short_sort.txt
+	
+<br>
 
 ### Combine the SNP and genotype information by columns and append to header file
 
 	$ paste short_snp_all_sort.txt maize_tran_short.txt > maize_join_cut.txt
-	
-
-**^SHOULD** be the `join` function:
-	
-	$ join -t "\t" -1 1 -2 1 -e '' short_snp_all_sort.txt maize_tran_short_sort.txt > TEST.txt
-	
-<br>
-	
-Add headers to the file with the combined SNP and genotype information.
-	 
 	$ cat maize_header.txt maize_join_cut.txt > MAIZE.txt
-	
+
+<br>
+
 ### Extract data for input files
 
 10 files (1 for each chromosome) with SNPs ordered based on increasing position values and with missing data encoded by this symbol: ?
