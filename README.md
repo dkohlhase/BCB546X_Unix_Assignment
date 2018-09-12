@@ -223,7 +223,7 @@ The same 'awk' command is used to extract the unknown and multiple SNP informati
 	
 	$ paste short_snp_all_sort.txt teosinte_tran_short.txt > teosinte_join_full.txt
 
-		$ awk -F "\t" '{print NF; exit}' teosinte_join_full.txt
+	$ awk -F "\t" '{print NF; exit}' teosinte_join_full.txt
 	$ cut -f 1-3,5-979 teosinte_join_full.txt > teosinte_join_cut.txt
 
 	$ cat teosinte_header.txt teosinte_join_cut.txt > TEOSINTE.txt
