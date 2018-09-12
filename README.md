@@ -162,7 +162,15 @@ Before joining the SNP information with the genotype information, both files nee
 
 ### Combine the SNP and genotype information by columns and append to header file
 
-	$ paste short_snp_all_sort.txt maize_tran_short.txt > maize_join_cut.txt
+	$ paste short_snp_all_sort.txt maize_tran_short.txt > maize_join_full.txt
+	
+After combining files, determine the number of columns and remove the 4th column because it is a duplication of the 1st column (SNP_ID)
+
+	$ awk -F "\t" '{print NF; exit}' maize_join_full.txt
+	$ cut -f 1-3,5-1577 > maize_join_full.txtmaize_join_cut.txt
+	
+Append to the header file.
+	
 	$ cat maize_header.txt maize_join_cut.txt > MAIZE.txt
 
 <br>
@@ -213,7 +221,10 @@ The same 'awk' command is used to extract the unknown and multiple SNP informati
 
 	$ sort -k1,1 teosinte_tran_short.txt > teosinte_tran_short_sort.txt
 	
-	$ paste short_snp_all_sort.txt teosinte_tran_short.txt > teosinte_join_cut.txt
+	$ paste short_snp_all_sort.txt teosinte_tran_short.txt > teosinte_join_full.txt
+
+		$ awk -F "\t" '{print NF; exit}' teosinte_join_full.txt
+	$ cut -f 1-3,5-979 teosinte_join_full.txt > teosinte_join_cut.txt
 
 	$ cat teosinte_header.txt teosinte_join_cut.txt > TEOSINTE.txt
 	
