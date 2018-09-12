@@ -248,7 +248,7 @@ The same 'awk' command is used to extract the unknown and multiple SNP informati
 ### Move and count the number of input files ready for analysis
 
 	$ mkdir FINAL_INPUT_FILES/
-	$ mv maize*_increase.txt maize*_reverse.txt teosinte*_increase.txt teosinte*_reverse.txt *_mult.txt *_unk.txt
+	$ mv maize*_increase.txt maize*_reverse.txt teosinte*_increase.txt teosinte*_reverse.txt *_mult.txt *_unk.txt FINAL_INPUT_FILES/
 	$ ls FINAL_INPUT_FILES/ | wc -l
 	
 > 44
