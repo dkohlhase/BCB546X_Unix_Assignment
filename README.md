@@ -234,6 +234,8 @@ The same 'awk' command is used to extract the unknown and multiple SNP informati
 	$ cat teosinte_header.txt teosinte_chrom_mult_headless.txt > teosinte_chrom_mult.txt
 	
 <br>
+<br>
+<br>
 
 ### Move and count the number of input files ready for analysis
 
@@ -244,3 +246,77 @@ The same 'awk' command is used to extract the unknown and multiple SNP informati
 > 44
 
 There are 44 files ready for downstream analysis.
+
+<br>
+
+### Quick File Checks
+
+The newly formed files can be previewed and counted to validate the contents.
+
+	$ cut -f 1-5 maize_chrom_01_increase.txt | column -t | head -n 11
+
+|SNP_ID		|Chromosome	|Position	|ZDP_0752a	|ZDP_0793a
+| ---			| ---			| ---		| ---	| ---
+|SNP_ID		|Chromosome	|Position	|Zmm-LR-ACOM-usa-NM-1_s	|Zmm-LR-ACOM-usa-NM-2
+|SNP_ID		|Chromosome	|Position	|ZMMLR	|ZMMLR
+|PZA00230.5	|1				|157104	|C/C	|C/C
+|PZA00477.11	|1				|13205252	|T/T	|T/T
+|PZA00477.9	|1				|4175293	|C/T	|C/C
+|PZA00477.10	|1				|4175573	|G/G	|G/G
+|PZA00477.5	|1				|4429897	|C/C	|C/C
+|PZA00243.27	|1				|4430055	|T/T	|T/T
+|PZA00050.9	|1				|4835472	|G/G	|G/G
+|PZA00623.2	|1				|4835540	|T/T	|?/?
+
+We can see from this preview of the `maize_chrom_01_increase.txt` file that the SNPs are increasing in order by position and the missing data is encoded by the '?' symbol.
+
+<br>
+
+	$ cut -f 1-5 maize_chrom_01_reverse.txt | column -t | head -n 11
+	
+|SNP_ID		|Chromosome	|Position	|ZDP_0752a	|ZDP_0793a
+| ---			| ---			| ---		| ---	| ---
+|SNP_ID		|Chromosome	|Position	|Zmm-LR-ACOM-usa-NM-1_s	|Zmm-LR-ACOM-usa-NM-2
+|SNP_ID		|Chromosome	|Position	|ZMMLR	|ZMMLR
+|PZB00859.1	|1				|298412984	|G/G	|G/G
+|PZA02962.13	|1				|298082627	|G/G	|G/G
+|PZA00393.1	|1				|298082534	|C/C	|C/C
+|PZA00393.4	|1				|298082504	|G/G	|G/G
+|PZA02869.8	|1				|298082468	|T/T	|T/T
+|PZA02869.2	|1				|295771152	|A/A	|A/A
+|PZD00021.4	|1				|295459549	|A/A	|A/A
+|PZD00021.2	|1				|293632755	|C/G	|-/-
+
+We can see from this preview of the `maize_chrom_01_reverse.txt` file that the SNPs are decreasing in order by position and the missing data is encoded by the '-' symbol.
+
+<br>
+
+	$ wc maize*increase.txt maize_chrom_unk.txt maize_chrom_mult.txt
+
+|Lines	|File
+| ---	| ---	
+|158	|`maize_chrom_01_increase.txt`
+|129	|`maize_chrom_02_increase.txt`
+|110	|`maize_chrom_03_increase.txt`
+|91		|`maize_chrom_04_increase.txt`
+|125	|`maize_chrom_05_increase.txt`
+|76		|`maize_chrom_06_increase.txt`
+|99		|`maize_chrom_07_increase.txt`
+|65		|`maize_chrom_08_increase.txt`
+|60		|`maize_chrom_09_increase.txt`
+|56		|`maize_chrom_10_increase.txt`
+|30		|`maize_chrom_unk.txt`
+|20		|`maize_chrom_mult.txt`
+|1019	|total
+
+	$ wc MAIZE
+	
+|Lines	|File
+| ---	| ---	
+|986	|`MAIZE.txt`
+
+Accounting for the 3 header lines in each file we have a net total of 983 lines which matches the net total of the source `MAIZE.txt` file.
+
+> 1019 - (3*12) = 983
+ 
+> 986 - 3 = 983
