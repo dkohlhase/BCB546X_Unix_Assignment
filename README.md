@@ -160,7 +160,7 @@ Before joining the SNP information with the genotype information, both files nee
 	
 <br>
 
-### Combine the SNP and genotype information by columns and append to header file
+### Combine the SNP and genotype information
 
 	$ join -1 1 -2 1 -t $'\t' -e 'empty' short_snp_all_sort.txt maize_tran_short.txt > maize_join_full.txt	
 	
