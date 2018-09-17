@@ -162,16 +162,11 @@ Before joining the SNP information with the genotype information, both files nee
 
 ### Combine the SNP and genotype information by columns and append to header file
 
-	$ paste short_snp_all_sort.txt maize_tran_short.txt > maize_join_full.txt
-	
-After combining files, determine the number of columns and remove the 4th column because it is a duplication of the 1st column (SNP_ID)
-
-	$ awk -F "\t" '{print NF; exit}' maize_join_full.txt
-	$ cut -f 1-3,5-1577 > maize_join_full.txtmaize_join_cut.txt
+	$ join -1 1 -2 1 -t $'\t' -e 'empty' short_snp_all_sort.txt maize_tran_short.txt > maize_join_full.txt	
 	
 Append to the header file.
 	
-	$ cat maize_header.txt maize_join_cut.txt > MAIZE.txt
+	$ cat maize_header.txt maize_join_full.txt > MAIZE.txt
 
 <br>
 
@@ -180,7 +175,7 @@ Append to the header file.
 10 files (1 for each chromosome) with SNPs ordered based on increasing position values and with missing data encoded by this symbol: ?
 
 	$ sort -k2,2n -k3,3n MAIZE.txt > MAIZE_sort.txt 
-	$ awk '{ if ($2 == 1) { print } }' MAIZE_sort.txt > maize_chrom_01_IN_headless.txt
+	$ awk '{ if ($2 == 1 && $3 !~ /multiple/) { print } }' MAIZE_sort.txt > maize_chrom_01_IN_headless.txt
 	$ cat maize_header.txt maize_chrom_01_IN_headless.txt > maize_chrom_01_increase.txt
 
 The 'awk' command followed by appending the subset to the maize header file is repeated for each chromosome.
@@ -192,7 +187,7 @@ missing data encoded by this symbol: -
 
 	$ sort -k2,2n -k3,3nr MAIZE.txt > MAIZE_reverse.txt
 	$ sed 's/?/-/g' MAIZE_reverse.txt > MAIZE_reverse_sort.txt
-	$ awk '{ if ($2 == 1) { print } }' MAIZE_reverse_sort.txt > maize_chrom_01_RV_headless.txt
+	$ awk '{ if ($2 == 1 && $3 !~ /multiple/) { print } }' MAIZE_reverse_sort.txt > maize_chrom_01_RV_headless.txt
 	$ cat maize_header.txt maize_chrom_01_RV_headless.txt > maize_chrom_01_reverse.txt
 
 The addition of the 'sed' program substitutes -/- for ?/? to identify missing information.
@@ -201,12 +196,12 @@ The addition of the 'sed' program substitutes -/- for ?/? to identify missing in
 
 1 file with all SNPs with unknown positions in the genome (these need not be ordered in any particular way)
 
-	$ awk '{ if ($2 ~ /unknown/) { print } }' MAIZE_sort.txt > maize_chrom_unk_headless.txt
+	$ awk '{ if ($2 ~ /unknown/ || $3 ~ /unknown/) { print } }' MAIZE_sort.txt > maize_chrom_unk_headless.txt
 	$ cat maize_header.txt maize_chrom_unk_headless.txt > maize_chrom_unk.txt
 	
 1 file with all SNPs with multiple positions in the genome (these need not be ordered in any particular way)
 	
-	$ awk '{ if ($2 ~ /multiple/) { print } }' MAIZE_sort.txt > maize_chrom_mult_headless.txt
+	$ awk '{ if ($2 ~ /multiple/ || $3 ~ /multiple/) { print } }' MAIZE_sort.txt > maize_chrom_mult_headless.txt
 	$ cat maize_header.txt maize_chrom_mult_headless.txt > maize_chrom_mult.txt
 
 The same 'awk' command is used to extract the unknown and multiple SNP information except adapted to search for an alphanumeric string rather than a value.
@@ -220,27 +215,22 @@ The same 'awk' command is used to extract the unknown and multiple SNP informati
 	$ vi teosinte_header.txt
 
 	$ sort -k1,1 teosinte_tran_short.txt > teosinte_tran_short_sort.txt
-	
-	$ paste short_snp_all_sort.txt teosinte_tran_short.txt > teosinte_join_full.txt
-
-	$ awk -F "\t" '{print NF; exit}' teosinte_join_full.txt
-	$ cut -f 1-3,5-979 teosinte_join_full.txt > teosinte_join_cut.txt
-
-	$ cat teosinte_header.txt teosinte_join_cut.txt > TEOSINTE.txt
+	$ join -1 1 -2 1 -t $'\t' -e 'empty' short_snp_all_sort.txt teosinte_tran_short.txt > teosinte_join_full.txt
+	$ cat teosinte_header.txt teosinte_join_full.txt > TEOSINTE.txt
 	
 	$ sort -k2,2n -k3,3n TEOSINTE.txt > TEOSINTE_sort.txt 
-	$ awk '{ if ($2 == 1) { print } }' TEOSINTE_sort.txt > teosinte_chrom_01_IN_headless.txt
+	$ awk '{ if ($2 == 1 && $3 !~ /multiple/) { print } }' TEOSINTE_sort.txt > teosinte_chrom_01_IN_headless.txt
 	$ cat teosinte_header.txt teosinte_chrom_01_IN_headless.txt > teosinte_chrom_01_increase.txt
 	
 	$ sort -k2,2n -k3,3nr TEOSINTE.txt > TEOSINTE_reverse.txt
 	$ sed 's/?/-/g' TEOSINTE_reverse.txt > TEOSINTE_reverse_sort.txt
-	$ awk '{ if ($2 == 1) { print } }' TEOSINTE_reverse_sort.txt > teosinte_chrom_01_RV_headless.txt
+	$ awk '{ if ($2 == 1 && $3 !~ /multiple/) { print } }' TEOSINTE_reverse_sort.txt > teosinte_chrom_01_RV_headless.txt
 	$ cat teosinte_header.txt teosinte_chrom_01_RV_headless.txt > teosinte_chrom_01_reverse.txt
 	
-	$ awk '{ if ($2 ~ /unknown/) { print } }' TEOSINTE_sort.txt > teosinte_chrom_unk_headless.txt
+	$ awk '{ if ($2 ~ /unknown/ || $3 ~ /unknown/) { print } }' TEOSINTE_sort.txt > teosinte_chrom_unk_headless.txt
 	$ cat teosinte_header.txt teosinte_chrom_unk_headless.txt > teosinte_chrom_unk.txt
 
-	$ awk '{ if ($2 ~ /multiple/) { print } }' TEOSINTE_sort.txt > teosinte_chrom_mult_headless.txt
+	$ awk '{ if ($2 ~ /multiple/ || $3 ~ /multiple/) { print } }' TEOSINTE_sort.txt > teosinte_chrom_mult_headless.txt
 	$ cat teosinte_header.txt teosinte_chrom_mult_headless.txt > teosinte_chrom_mult.txt
 	
 <br>
