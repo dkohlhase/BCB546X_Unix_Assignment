@@ -109,14 +109,14 @@ Double check the unique entries in column 3 of teosinte.txt while counting the n
 	
 |Lines		|Words		|Characters	|File	
 | --- 		| --- 		| --- 			| ---
-|968		|1551964	|6250961		|`maize_transposed.txt`
+|986		|1551964	|6250961		|`maize_transposed.txt`
 
 	$ awk -f transpose.awk teosinte.txt > teosinte_transposed.txt
 	$ wc teosinte_transposed.txt
 
 |Lines		|Words		|Characters	|File	
 | --- 		| --- 		| --- 			| ---
-|968		|962336	|3884185		|`teosinte_transposed.txt`
+|986		|962336	|3884185		|`teosinte_transposed.txt`
 
 The number of lines has changed in both files and now match. The number of words and characters remained the same for the respective files, which is what we would expect because all we did was rearrange (transpose) the file.
 
