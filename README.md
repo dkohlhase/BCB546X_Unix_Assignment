@@ -178,7 +178,7 @@ Append to the header file.
 	$ awk '{ if ($2 == 1 && $3 !~ /multiple/) { print } }' MAIZE_sort.txt > maize_chrom_01_IN_headless.txt
 	$ cat maize_header.txt maize_chrom_01_IN_headless.txt > maize_chrom_01_increase.txt
 
-The 'awk' command followed by appending the subset to the maize header file is repeated for each chromosome.
+The 'awk' command followed by appending the subset to the maize header file is **repeated for each chromosome**.
 
 <br>	
 
